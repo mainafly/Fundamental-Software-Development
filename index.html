@@ -3,21 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Student Projects and GitHub Code</title>
+  <title>Student Projects & GitHub Links</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #eef2f5;
+      background: #f4f6f8;
       margin: 0;
-      padding: 0;
       color: #333;
     }
 
     header {
       background-color: #1e3a5f;
       color: white;
-      text-align: center;
-      padding: 20px 0;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .menu-icon {
+      cursor: pointer;
+      width: 30px;
+      height: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .menu-icon span {
+      background: white;
+      height: 4px;
+      border-radius: 2px;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      display: none;
+      border-radius: 8px;
+      min-width: 180px;
+      z-index: 10;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 12px 15px;
+      color: #1e3a5f;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .dropdown a:hover {
+      background-color: #f0f0f0;
     }
 
     main {
@@ -26,15 +73,11 @@
       padding: 0 20px;
     }
 
-    h1 {
-      margin-bottom: 10px;
-    }
-
     .project {
       background: #fff;
-      border-radius: 10px;
-      padding: 20px;
       margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
@@ -44,7 +87,7 @@
     }
 
     .project a {
-      color: #0077cc;
+      color: #007acc;
       text-decoration: none;
     }
 
@@ -62,8 +105,20 @@
 </head>
 <body>
   <header>
-    <h1>Student Learning Projects</h1>
-    <p>Explore live demos and their GitHub source code</p>
+    <h1>Student Learning Portal</h1>
+    <div class="menu-icon" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <div class="dropdown" id="dropdownMenu">
+      <a href="https://ishakuyusufmaina.github.io/3clocal/">🎮 Three Center Game</a>
+      <a href="https://ishakuyusufmaina.github.io/8-puzzle/">🧩 Eight Puzzle</a>
+     <a href="https://ishakuyusufmaina.github.io/arithmeticq/">🎮 Arithmetic Q</a>
+     <a href="https://ishakuyusufmaina.github.io/bmi/">🧍🏽‍♂️ BMI Calculator</a>
+
+    </div>
   </header>
 
   <main>
@@ -74,10 +129,10 @@
           View Live Project
         </a> |
         <a href="https://github.com/mainafly/fundamental-software-development/blob/main/my-coding-journey.html" target="_blank">
-          GitHub Source Code
+          GitHub Source
         </a>
       </p>
-      <p>An article-style webpage demonstrating the semantic use of common HTML textual elements such as headings, paragraphs, blockquotes, and lists.</p>
+      <p>An article demonstrating semantic use of HTML textual elements like headings, paragraphs, lists, etc.</p>
     </section>
 
     <section class="project">
@@ -87,10 +142,10 @@
           View Live Project
         </a> |
         <a href="https://github.com/mainafly/fundamental-software-development/blob/main/portfolio.html" target="_blank">
-          GitHub Source Code
+          GitHub Source
         </a>
       </p>
-      <p>A clean, minimalist software developer portfolio highlighting skills, projects, and contact information — ideal for beginners.</p>
+      <p>A minimalist software developer portfolio showcasing skills and contact info.</p>
     </section>
 
     <section class="project">
@@ -100,10 +155,10 @@
           View Live Project
         </a> |
         <a href="https://github.com/mainafly/fundamental-software-development/blob/main/portfolio1.html" target="_blank">
-          GitHub Source Code
+          GitHub Source
         </a>
       </p>
-      <p>A variation of the developer portfolio with a similar minimalist approach, offering a different design layout and presentation.</p>
+      <p>Another clean version of a portfolio for personal branding and projects.</p>
     </section>
 
     <section class="project">
@@ -113,15 +168,31 @@
           View Live Project
         </a> |
         <a href="https://github.com/mainafly/fundamental-software-development/blob/main/portfolio2.html" target="_blank">
-          GitHub Source Code
+          GitHub Source
         </a>
       </p>
-      <p>A third minimalist developer portfolio design, suitable for personal branding, project showcases, and resume-style introductions.</p>
+      <p>A third minimalist layout option for showcasing software development experience.</p>
     </section>
   </main>
 
   <footer>
-    &copy; 2025 Ishaku Maina | All projects are part of the Fundamental Software Development series
+    &copy; 2025 Ishaku Maina | Fundamental Software Development Series
   </footer>
+
+  <script>
+    function toggleMenu() {
+      const dropdown = document.getElementById("dropdownMenu");
+      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    }
+
+    // Optional: hide menu on outside click
+    window.addEventListener('click', function(e) {
+      const menu = document.getElementById('dropdownMenu');
+      const icon = document.querySelector('.menu-icon');
+      if (!icon.contains(e.target) && !menu.contains(e.target)) {
+        menu.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>
