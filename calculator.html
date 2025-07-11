@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mind-Blowing Calculator</title>
+  <style>
+    :root {
+      --bg-light: #f4f4f4;
+      --text-light: #222;
+      --bg-dark: #1e1e2f;
+      --text-dark: #fff;
+      --accent: #ff6f61;
+      --success: #4caf50;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: var(--text-dark);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    body.light {
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    .container {
+      max-width: 420px;
+      margin: 40px auto;
+      padding: 20px;
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    }
+
+    .toggle-mode {
+      float: right;
+      margin-bottom: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      background: transparent;
+      border: 1px solid currentColor;
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    .display {
+      width: 100%;
+      height: 80px;
+      font-size: 2rem;
+      padding: 10px;
+      text-align: right;
+      border: none;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.2);
+      color: inherit;
+      margin-bottom: 15px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    button {
+      height: 60px;
+      font-size: 1.4rem;
+      border: none;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.2);
+      color: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    button.operator {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    button.equals {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .history {
+      margin-top: 20px;
+      max-height: 150px;
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.9rem;
+    }
+
+    .history h3 {
+      margin-bottom: 5px;
+      font-size: 1rem;
+    }
+
+    .history-entry {
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 500px) {
+      .display {
+        font-size: 1.5rem;
+        height: 60px;
+      }
+
+      button {
+        font-size: 1.2rem;
+        height: 55px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <button class="toggle-mode" onclick="toggleMode()">Toggle Light/Dark</button>
+    <input type="text" class="display" id="display" disabled />
+    <div class="buttons">
+      <button onclick="playClick(); clearDisplay()">C</button>
+      <button onclick="playClick(); append('%')">%</button>
+      <button onclick="playClick(); append('/')">÷</button>
+      <button onclick="playClick(); append('*')" class="operator">×</button>
+
+      <button onclick="playClick(); append('7')">7</button>
+      <button onclick="playClick(); append('8')">8</button>
+      <button onclick="playClick(); append('9')">9</button>
+      <button onclick="playClick(); append('-')" class="operator">−</button>
+
+      <button onclick="playClick(); append('4')">4</button>
+      <button onclick="playClick(); append('5')">5</button>
+      <button onclick="playClick(); append('6')">6</button>
+      <button onclick="playClick(); append('+')" class="operator">+</button>
+
+      <button onclick="playClick(); append('1')">1</button>
+      <button onclick="playClick(); append('2')">2</button>
+      <button onclick="playClick(); append('3')">3</button>
+      <button onclick="playClick(); calculate()" class="equals">=</button>
+
+      <button onclick="playClick(); append('0')">0</button>
+      <button onclick="playClick(); append('.')">.</button>
+      <button onclick="playClick(); deleteChar()">⌫</button>
+      <button onclick="playClick(); append('**')">^</button>
+    </div>
+
+    <div class="history" id="history">
+      <h3>History</h3>
+      <div id="history-entries"></div>
+    </div>
+  </div>
+
+  <!-- Click sound -->
+  <audio id="click-sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
+
+  <script>
+    const display = document.getElementById('display');
+    const historyContainer = document.getElementById('history-entries');
+    const clickSound = document.getElementById('click-sound');
+
+    function append(value) {
+      display.value += value;
+    }
+
+    function clearDisplay() {
+      display.value = '';
+    }
+
+    function deleteChar() {
+      display.value = display.value.slice(0, -1);
+    }
+
+    function playClick() {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    }
+
+    function calculate() {
+      try {
+        const expression = display.value.replace('%', '/100');
+        const result = eval(expression);
+        if (display.value !== '') {
+          addToHistory(display.value + ' = ' + result);
+        }
+        display.value = result;
+      } catch {
+        display.value = 'Error';
+      }
+    }
+
+    function addToHistory(entry) {
+      const div = document.createElement('div');
+      div.className = 'history-entry';
+      div.textContent = entry;
+      historyContainer.prepend(div);
+    }
+
+    function toggleMode() {
+      document.body.classList.toggle('light');
+    }
+  </script>
+</body>
+</html>
